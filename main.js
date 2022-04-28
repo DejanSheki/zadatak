@@ -2,7 +2,7 @@ let play = Math.round(Math.random() * 100);
 const sword = 10;
 const magic = 20;
 const spear = 15;
-let backpacks = [magic, spear];
+let backpacks = [magic, spear, sword];
 const error = 'NoWeapon';
 
 class Hero {
@@ -19,17 +19,13 @@ class Hero {
         } catch (error) {
             // backpack.splice(Math.floor(Math.random() * backpack.length), 1);
             // console.log(backpack);
-            console.log(error);
+            // console.log(error);
         }
     }
-    attack = function () {
+    attack() {
         let weapon = backpacks[Math.floor(Math.random() * backpacks.length)];;
-        console.log(weapon);
-        return weapon;;
-        // if (magic) {
-        //     Monster.punch - 20;
-        //     console.log(Monster.punch);
-        // }
+        // console.log(weapon);
+        return weapon;
     }
 }
 class Wizard extends Hero {
@@ -46,34 +42,54 @@ class Swordsman extends Hero {
     }
 }
 class Monster {
-    constructor(punch) {
+    constructor() {
         this.punch = 5;
+        this.health = 80;
+    }
+    attack() {
+        let weapon = backpacks[Math.floor(Math.random() * backpacks.length)];;
+        // console.log(weapon);
+        return weapon;
     }
 }
 class Dragon extends Monster {
-    constructor(punch) {
-        super(punch);
+    constructor(punch, health) {
+        super(punch, health);
         this.spits = 20;
+    }
+    attack() {
+        let monsterWeapon = [this.punch, this.spits];
+        let weapon = monsterWeapon[Math.floor(Math.random() * monsterWeapon.length)];;
+        // console.log(weapon);
+        return weapon;
     }
 }
 class Spider extends Monster {
-    constructor(punch) {
+    constructor(punch, health) {
         super(punch);
         this.bites = 8;
     }
 }
 const dejan = new Wizard('Dejan');
-
-dejan.attack();
+const monster = new Dragon();
 
 function start() {
     if (play < 50) {
-        dejan.attack();
+        monster.health = monster.health - dejan.attack();
+        console.log('monster: ' + monster.health);
     } else if (play > 50) {
-
+        dejan.health = dejan.health - monster.attack();
+        console.log('dejan: ' + dejan.health);
+    }
+    if (monster.health === 0) {
+        console.log('Monster is dead!');
+        return;
+    } else if (dejan.health === 0) {
+        console.log('Dejan is dead!');
+        return;
+    } else {
+        start();
     }
 }
-start();
 
-const monster = new Dragon();
-console.log(monster);
+start();
